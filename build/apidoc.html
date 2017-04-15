@@ -61,12 +61,95 @@
 
     <li class="apidocModuleLi"><a href="#apidoc.module.gulp-bower">module gulp-bower</a><ol>
 
+        <li>
+
+            <a class="apidocElementLiA" href="#apidoc.element.gulp-bower.gulp-bower">
+            function <span class="apidocSignatureSpan"></span>gulp-bower
+            <span class="apidocSignatureSpan">(opts, cmdArguments)</span>
+            </a>
+
+        </li>
+
+        <li>
+
+            <a class="apidocElementLiA" href="#apidoc.element.gulp-bower.toString">
+            function <span class="apidocSignatureSpan">gulp-bower.</span>toString
+            <span class="apidocSignatureSpan">()</span>
+            </a>
+
+        </li>
+
     </ol></li>
 
 </ol></div>
 
 <div class="apidocSectionDiv">
 <h1><a href="#apidoc.module.gulp-bower" id="apidoc.module.gulp-bower">module gulp-bower</a></h1>
+
+
+    <h2>
+        <a href="#apidoc.element.gulp-bower.gulp-bower" id="apidoc.element.gulp-bower.gulp-bower">
+        function <span class="apidocSignatureSpan"></span>gulp-bower
+        <span class="apidocSignatureSpan">(opts, cmdArguments)</span>
+        </a>
+    </h2>
+    <ul>
+    <li>description and source-code<pre class="apidocCodePre">function gulpBower(opts, cmdArguments) {
+    opts = parseOptions(opts);
+
+    log.info(&#x27;Using cwd: &#x27; + opts.cwd);
+    log.info(&#x27;Using bower dir: &#x27; + opts.directory);
+
+    cmdArguments = createCmdArguments(cmdArguments, opts);
+    var bowerCommand = getBowerCommand(cmd);
+
+    var stream = through.obj(function (file, enc, callback) {
+        this.push(file);
+        callback();
+    });
+
+    bowerCommand.apply(bower.commands, cmdArguments)
+        .on(&#x27;log&#x27;, function (result) {
+            log.info([&#x27;bower&#x27;, gutil.colors.cyan(result.id), result.message].join(&#x27; &#x27;));
+        })
+        .on(&#x27;prompt&#x27;, function (prompts, callback) {
+            if (enablePrompt === true) {
+                inquirer.prompt(prompts, callback);
+            } else {
+                var error = &#x27;Can\&#x27;t resolve suitable dependency version.&#x27;;
+                log.error(error);
+                log.error(&#x27;Set option { interactive: true } to select.&#x27;);
+                throw new gutil.PluginError(PLUGIN_NAME, error);
+            }
+        })
+        .on(&#x27;error&#x27;, function (error) {
+            stream.emit(&#x27;error&#x27;, new gutil.PluginError(PLUGIN_NAME, error));
+            stream.emit(&#x27;end&#x27;);
+        })
+        .on(&#x27;end&#x27;, function () {
+            writeStreamToFs(opts, stream);
+        });
+
+    return stream;
+}</pre></li>
+    <li>example usage<pre class="apidocCodePre">n/a</pre></li>
+    </ul>
+
+
+
+    <h2>
+        <a href="#apidoc.element.gulp-bower.toString" id="apidoc.element.gulp-bower.toString">
+        function <span class="apidocSignatureSpan">gulp-bower.</span>toString
+        <span class="apidocSignatureSpan">()</span>
+        </a>
+    </h2>
+    <ul>
+    <li>description and source-code<pre class="apidocCodePre">toString = function () {
+    return toString;
+}</pre></li>
+    <li>example usage<pre class="apidocCodePre">n/a</pre></li>
+    </ul>
+
 
 </div>
 
