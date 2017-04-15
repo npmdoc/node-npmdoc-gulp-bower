@@ -1,11 +1,13 @@
 # api documentation for  [gulp-bower (v0.0.13)](https://github.com/zont/gulp-bower#readme)  [![npm package](https://img.shields.io/npm/v/npmdoc-gulp-bower.svg?style=flat-square)](https://www.npmjs.org/package/npmdoc-gulp-bower) [![travis-ci.org build-status](https://api.travis-ci.org/npmdoc/node-npmdoc-gulp-bower.svg)](https://travis-ci.org/npmdoc/node-npmdoc-gulp-bower)
 #### Install Bower packages.
 
-[![NPM](https://nodei.co/npm/gulp-bower.png?downloads=true)](https://www.npmjs.com/package/gulp-bower)
+[![NPM](https://nodei.co/npm/gulp-bower.png?downloads=true&downloadRank=true&stars=true)](https://www.npmjs.com/package/gulp-bower)
 
-[![apidoc](https://npmdoc.github.io/node-npmdoc-gulp-bower/build/screen-capture.buildNpmdoc.browser._2Fhome_2Ftravis_2Fbuild_2Fnpmdoc_2Fnode-npmdoc-gulp-bower_2Ftmp_2Fbuild_2Fapidoc.html.png)](https://npmdoc.github.io/node-npmdoc-gulp-bower/build..beta..travis-ci.org/apidoc.html)
+[![apidoc](https://npmdoc.github.io/node-npmdoc-gulp-bower/build/screenCapture.buildCi.browser.apidoc.html.png)](https://npmdoc.github.io/node-npmdoc-gulp-bower/build/apidoc.html)
 
-![package-listing](https://npmdoc.github.io/node-npmdoc-gulp-bower/build/screen-capture.npmPackageListing.svg)
+![npmPackageListing](https://npmdoc.github.io/node-npmdoc-gulp-bower/build/screenCapture.npmPackageListing.svg)
+
+![npmPackageDependencyTree](https://npmdoc.github.io/node-npmdoc-gulp-bower/build/screenCapture.npmPackageDependencyTree.svg)
 
 
 
@@ -15,8 +17,7 @@
 
 {
     "author": {
-        "name": "Alexander Zonov",
-        "email": "zont@pochta.ru"
+        "name": "Alexander Zonov"
     },
     "bugs": {
         "url": "https://github.com/zont/gulp-bower/issues"
@@ -62,13 +63,11 @@
     "main": "index.js",
     "maintainers": [
         {
-            "name": "alexander.zonov",
-            "email": "zont@pochta.ru"
+            "name": "alexander.zonov"
         }
     ],
     "name": "gulp-bower",
     "optionalDependencies": {},
-    "readme": "ERROR: No README data found!",
     "repository": {
         "type": "git",
         "url": "git://github.com/zont/gulp-bower.git"
@@ -85,10 +84,71 @@
 # <a name="apidoc.tableOfContents"></a>[table of contents](#apidoc.tableOfContents)
 
 #### [module gulp-bower](#apidoc.module.gulp-bower)
+1.  [function <span class="apidocSignatureSpan"></span>gulp-bower (opts, cmdArguments)](#apidoc.element.gulp-bower.gulp-bower)
+1.  [function <span class="apidocSignatureSpan">gulp-bower.</span>toString ()](#apidoc.element.gulp-bower.toString)
 
 
 
 # <a name="apidoc.module.gulp-bower"></a>[module gulp-bower](#apidoc.module.gulp-bower)
+
+#### <a name="apidoc.element.gulp-bower.gulp-bower"></a>[function <span class="apidocSignatureSpan"></span>gulp-bower (opts, cmdArguments)](#apidoc.element.gulp-bower.gulp-bower)
+- description and source-code
+```javascript
+function gulpBower(opts, cmdArguments) {
+    opts = parseOptions(opts);
+
+    log.info('Using cwd: ' + opts.cwd);
+    log.info('Using bower dir: ' + opts.directory);
+
+    cmdArguments = createCmdArguments(cmdArguments, opts);
+    var bowerCommand = getBowerCommand(cmd);
+
+    var stream = through.obj(function (file, enc, callback) {
+        this.push(file);
+        callback();
+    });
+
+    bowerCommand.apply(bower.commands, cmdArguments)
+        .on('log', function (result) {
+            log.info(['bower', gutil.colors.cyan(result.id), result.message].join(' '));
+        })
+        .on('prompt', function (prompts, callback) {
+            if (enablePrompt === true) {
+                inquirer.prompt(prompts, callback);
+            } else {
+                var error = 'Can\'t resolve suitable dependency version.';
+                log.error(error);
+                log.error('Set option { interactive: true } to select.');
+                throw new gutil.PluginError(PLUGIN_NAME, error);
+            }
+        })
+        .on('error', function (error) {
+            stream.emit('error', new gutil.PluginError(PLUGIN_NAME, error));
+            stream.emit('end');
+        })
+        .on('end', function () {
+            writeStreamToFs(opts, stream);
+        });
+
+    return stream;
+}
+```
+- example usage
+```shell
+n/a
+```
+
+#### <a name="apidoc.element.gulp-bower.toString"></a>[function <span class="apidocSignatureSpan">gulp-bower.</span>toString ()](#apidoc.element.gulp-bower.toString)
+- description and source-code
+```javascript
+toString = function () {
+    return toString;
+}
+```
+- example usage
+```shell
+n/a
+```
 
 
 
