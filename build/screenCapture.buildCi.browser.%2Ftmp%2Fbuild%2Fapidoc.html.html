@@ -1,4 +1,4 @@
-<div class="apidocDiv">
+<html><head></head><body><div class="apidocDiv">
 <style>
 /*csslint
 */
@@ -47,17 +47,10 @@
 }
 </style>
 <h1>api documentation for
-    <a
-
-        href="https://github.com/zont/gulp-bower#readme"
-
-    >gulp-bower (v0.0.13)</a>
+    <a href="https://github.com/zont/gulp-bower#readme">gulp-bower (v0.0.13)</a>
 </h1>
 <h4>Install Bower packages.</h4>
-<div class="apidocSectionDiv"><a
-    href="#apidoc.tableOfContents"
-    id="apidoc.tableOfContents"
-><h1>table of contents</h1></a><ol>
+<div class="apidocSectionDiv"><a href="#apidoc.tableOfContents" id="apidoc.tableOfContents"><h1>table of contents</h1></a><ol>
 
     <li class="apidocModuleLi"><a href="#apidoc.module.gulp-bower">module gulp-bower</a><ol>
 
@@ -88,8 +81,8 @@
     <li>description and source-code<pre class="apidocCodePre">function gulpBower(opts, cmdArguments) {
     opts = parseOptions(opts);
 
-    log.info(&#x27;Using cwd: &#x27; + opts.cwd);
-    log.info(&#x27;Using bower dir: &#x27; + opts.directory);
+    log.info('Using cwd: ' + opts.cwd);
+    log.info('Using bower dir: ' + opts.directory);
 
     cmdArguments = createCmdArguments(cmdArguments, opts);
     var bowerCommand = getBowerCommand(cmd);
@@ -100,24 +93,24 @@
     });
 
     bowerCommand.apply(bower.commands, cmdArguments)
-        .on(&#x27;log&#x27;, function (result) {
-            log.info([&#x27;bower&#x27;, gutil.colors.cyan(result.id), result.message].join(&#x27; &#x27;));
+        .on('log', function (result) {
+            log.info(['bower', gutil.colors.cyan(result.id), result.message].join(' '));
         })
-        .on(&#x27;prompt&#x27;, function (prompts, callback) {
+        .on('prompt', function (prompts, callback) {
             if (enablePrompt === true) {
                 inquirer.prompt(prompts, callback);
             } else {
-                var error = &#x27;Can\&#x27;t resolve suitable dependency version.&#x27;;
+                var error = 'Can\'t resolve suitable dependency version.';
                 log.error(error);
-                log.error(&#x27;Set option { interactive: true } to select.&#x27;);
+                log.error('Set option { interactive: true } to select.');
                 throw new gutil.PluginError(PLUGIN_NAME, error);
             }
         })
-        .on(&#x27;error&#x27;, function (error) {
-            stream.emit(&#x27;error&#x27;, new gutil.PluginError(PLUGIN_NAME, error));
-            stream.emit(&#x27;end&#x27;);
+        .on('error', function (error) {
+            stream.emit('error', new gutil.PluginError(PLUGIN_NAME, error));
+            stream.emit('end');
         })
-        .on(&#x27;end&#x27;, function () {
+        .on('end', function () {
             writeStreamToFs(opts, stream);
         });
 
@@ -135,3 +128,4 @@
     ]
 </div>
 </div>
+</body></html>
